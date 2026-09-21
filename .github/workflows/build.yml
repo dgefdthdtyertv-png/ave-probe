@@ -1,0 +1,21 @@
+name: Build AVE Probe IPA
+on: push
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Theos
+        run: |
+          git clone https://github.com/theos/theos.git ~/theos
+          echo "export THEOS=~/theos" >> ~/.zshrc
+          source ~/.zshrc
+      - name: Build IPA
+        run: |
+          source ~/.zshrc
+          make package FINALPACKAGE=1
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: aveprobe-ipa
+          path: ./packages/*.ipa

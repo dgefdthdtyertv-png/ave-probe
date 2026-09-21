@@ -5,17 +5,12 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Theos
+      - name: Build binary & package IPA
         run: |
-          git clone https://github.com/theos/theos.git ~/theos
-          echo "export THEOS=~/theos" >> ~/.zshrc
-          source ~/.zshrc
-      - name: Build IPA
-        run: |
-          source ~/.zshrc
-          make package FINALPACKAGE=1
+          chmod +x build.sh
+          ./build.sh
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: aveprobe-ipa
-          path: ./packages/*.ipa
+          path: ./aveprobe.ipa

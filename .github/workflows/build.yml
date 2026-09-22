@@ -6,13 +6,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Theos + SDK
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y git curl perl libxml2-utils
+
+      - name: Setup Theos
         run: |
           git clone https://github.com/theos/theos.git $HOME/theos
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
-          # 自动下载iOS15 SDK
+          # 新版theos用这个脚本下载SDK
           cd $HOME/theos
-          ./bin/install.sh
+          curl -s https://raw.githubusercontent.com/theos/sdks/master/install.py | python3
 
       - name: Build Tweak
         run: |

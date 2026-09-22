@@ -13,9 +13,11 @@ jobs:
 
       - name: Clone Theos
         run: |
+          rm -rf $HOME/theos
           git clone https://github.com/theos/theos.git $HOME/theos
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
           cd $HOME/theos
+          rm -rf sdks
           git clone https://github.com/theos/sdks.git sdks
 
       - name: Build Tweak

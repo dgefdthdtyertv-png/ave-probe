@@ -6,13 +6,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Theos Action
-        uses: theos/theos-action@v1
-        with:
-          sdk: 15.0
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y git perl curl python3
 
-      - name: Build
-        run: make
+      - name: Clone Theos
+        run: |
+          git clone https://mirror.ghproxy.com/https://github.com/theos/theos.git $HOME/theos
+          echo "THEOS=$HOME/theos" >> $GITHUB_ENV
+          cd $HOME/theos
+          git clone https://mirror.ghproxy.com/https://github.com/theos/sdks.git sdks
+
+      - name: Build Tweak
+        run: |
+          make
 
       - name: Upload dylib
         uses: actions/upload-artifact@v4
